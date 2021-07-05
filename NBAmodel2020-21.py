@@ -3,20 +3,23 @@ import time
 import pandas as pd
 from datetime import datetime
 import last10_fourfactors # run web scraper to get each teams average four factors for the last 10 games
-from boxScoresLinearRegression import prediction # run linear regression model and import prediction function 
+from NBALinearRegressionModel import prediction # run linear regression model and import prediction function 
+from webdriver_manager.chrome import ChromeDriverManager
 
 fourFactors = pd.read_csv('/Users/oliverjaros/Develop/nba/last10_fourfactors.csv', index_col = None)
 data = []
 
-driver = webdriver.Chrome('/Library/Application Support/Google/chromedriver')
+driver = webdriver.Chrome(ChromeDriverManager().install())
 
 
 today = datetime.today()
 curr_month = today.strftime('%B').lower()
+curr_year = today.strftime('%Y')
 # curr_date = today.strftime("%a, %h %d, %Y")
-curr_date = today.strftime("Wed, Dec 23, 2020")
+curr_date = today.strftime("Tue, Jul 6, 2021")
 
-schedule = "https://www.basketball-reference.com/leagues/NBA_2021_games-{}.html".format(curr_month)
+schedule = "https://www.basketball-reference.com/leagues/NBA_{}".format(curr_year) + "_games-{}.html".format(curr_month)
+
 driver.get(schedule)
 
 row = driver.find_elements_by_xpath('//*[@id="schedule"]/tbody/tr')
